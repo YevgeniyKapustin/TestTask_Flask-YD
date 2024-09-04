@@ -12,6 +12,11 @@
         <input type="text" name="public_key" required>
         <button type="submit">Просмотреть</button>
     </form>
+    {% if folder_public_key %}
+    <a href="{{ download_file(folder_public_key) }}">
+        <button>Скачать всё</button>
+    </a>
+    {% endif %}
 
     {% if files %}
         <h2>Файлы:</h2>
@@ -19,7 +24,7 @@
         {% for file in files %}
             <li>
                 {{ file.name }}
-                <a href="{{ download_file(file.public_key) }}">
+                <a href="{{ file.file }}">
                     <button>Скачать</button>
                 </a>
             </li>
