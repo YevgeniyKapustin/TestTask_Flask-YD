@@ -1,22 +1,26 @@
-import aiohttp
 import requests
+from cachetools import TTLCache, cached
 
 
-async def fetch_files_info(public_key):
+cache = TTLCache(maxsize=100, ttl=60)
+
+
+@cached(cache)
+def fetch_files_info(public_key):
     url = f'https://cloud-api.yandex.net/v1/disk/public/resources?public_key={public_key}'
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                data = await response.json()
-                if data.get('_embedded'):
-                    return [item for item in data.get('_embedded', {}).get('items', [])]
-                elif data.get('type'):
-                    return [data]
-            else:
-                return []
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if data.get('_embedded'):
+            return [item for item in data.get('_embedded', {}).get('items', [])]
+        elif data.get('type'):
+            return [data]
+    else:
+        return []
 
 
+@cached(cache)
 def download_file(public_key):
     url = f'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key={public_key}'
 

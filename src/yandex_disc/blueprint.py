@@ -6,12 +6,12 @@ blueprint = Blueprint('yandex_disc', __name__, template_folder='templates')
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
-async def index():
+def index():
     files = None
     public_key = None
     if request.method == 'POST':
         public_key = request.form['public_key']
-        files = await fetch_files_info(public_key)
+        files = fetch_files_info(public_key)
     return render_template(
         'yandex_disc/index.html',
         files=files,
