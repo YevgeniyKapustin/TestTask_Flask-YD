@@ -2,7 +2,7 @@ import requests
 from cachetools import TTLCache, cached
 
 
-cache = TTLCache(maxsize=100, ttl=60)
+cache = TTLCache(maxsize=100, ttl=30)
 
 
 @cached(cache)
@@ -20,7 +20,6 @@ def fetch_files_info(public_key):
         return []
 
 
-@cached(cache)
 def download_file(public_key):
     url = f'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key={public_key}'
 

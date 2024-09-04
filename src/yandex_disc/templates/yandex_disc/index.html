@@ -9,7 +9,14 @@
 <body>
     <h1>Введите публичную ссылку на файл</h1>
     <form method="post">
-        <input type="text" name="public_key" required>
+        <input type="text" name="public_key" value="{{ public_key }}" required>
+        <label for="selected_type">Типы данных:</label>
+        <select name="selected_type" id="selected_type">
+            <option value="all" {% if selected_type == 'all' %}selected{% endif %}>All</option>
+            {% for type in types %}
+            <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
+            {% endfor %}
+        </select>
         <button type="submit">Просмотреть</button>
     </form>
     {% if folder_public_key %}
@@ -17,6 +24,7 @@
         <button>Скачать всё</button>
     </a>
     {% endif %}
+
 
     {% if files %}
         <h2>Файлы:</h2>
