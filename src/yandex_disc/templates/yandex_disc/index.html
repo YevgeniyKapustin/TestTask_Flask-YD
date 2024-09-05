@@ -3,41 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="no-referrer">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Просмотр файлов на Яндекс.Диске</title>
 </head>
-<body>
-    <h1>Введите публичную ссылку на файл</h1>
+
+<body class="bg-body-secondary">
+<div class="content container col-md-12 gy-3 bg-white shadow p-3 mb-5 bg-body-tertiary rounded">
+<div class="mb-5">
     <form method="post">
-        <input type="text" name="public_key" value="{{ public_key }}" required>
-        <label for="selected_type">Типы данных:</label>
-        <select name="selected_type" id="selected_type">
-            <option value="all" {% if selected_type == 'all' %}selected{% endif %}>All</option>
-            {% for type in types %}
-            <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Просмотреть</button>
+        <div class="mb-3">
+            <label class="form-label" for="selected_type">Введите публичную ссылку на файл</label>
+            <input class="form-control" type="text" name="public_key" value="{{ public_key }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="selected_type">Выберите необходимый тип данных</label>
+            <select class="form-select" name="selected_type" id="selected_type">
+                <option value="all" {% if selected_type == 'all' %}selected{% endif %}>Любой</option>
+                {% for type in types %}
+                <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="d-grid gap-2">
+            <button class="btn btn-outline-dark" type="submit">Просмотреть</button>
+        </div>
     </form>
-    {% if folder_public_key %}
-    <a href="{{ download_file(folder_public_key) }}">
-        <button>Скачать всё</button>
-    </a>
-    {% endif %}
+</div>
 
-
+<div class="mb-5">
     {% if files %}
-        <h2>Файлы:</h2>
-        <ul>
+        <h2>Найденные файлы</h2>
+        {% if folder_public_key %}
+        <div class="gy-3">
+            <a href="{{ download_file(folder_public_key) }}" class="list-group-item list-group-item-action bg-white shadow">
+                Скачать всю папку
+            </a>
+        </div>
+        {% endif %}
+        <div class="list-group list-group-flush list-group-numbered">
         {% for file in files %}
-            <li>
+            <a href="{{ file.file }}" class="list-group-item list-group-item-action bg-white shadow">
                 {{ file.name }}
-                <a href="{{ file.file }}">
-                    <button>Скачать</button>
-                </a>
-            </li>
+            </a>
         {% endfor %}
-        </ul>
+        </div>
     {% endif %}
+</div>
+</div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </html>

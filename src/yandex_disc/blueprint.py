@@ -25,6 +25,6 @@ def index():
         download_file=download_file,
         folder_public_key=public_key if files and len(files) > 1 else None,
         types={file.get('mime_type') for file in files if file} if files else [],
-        public_key=public_key,
+        public_key=public_key if public_key else None,
         selected_type=selected_type
     )
