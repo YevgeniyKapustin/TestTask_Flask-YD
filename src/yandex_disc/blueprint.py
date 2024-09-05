@@ -9,7 +9,7 @@ blueprint = Blueprint('yandex_disc', __name__, template_folder='templates')
 def index():
     files = None
     public_key = None
-    selected_type = 'all'
+    selected_type = None
     filtered_files = None
     if request.method == 'POST':
         session['form_data'] = request.form
@@ -25,6 +25,6 @@ def index():
         download_file=download_file,
         folder_public_key=public_key if files and len(files) > 1 else None,
         types={file.get('mime_type') for file in files if file} if files else [],
-        public_key=public_key if public_key else None,
+        public_key=public_key if public_key else '',
         selected_type=selected_type
     )
